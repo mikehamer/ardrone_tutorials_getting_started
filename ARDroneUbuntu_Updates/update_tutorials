@@ -1,13 +1,34 @@
 #!/bin/bash
 source /home/ardrone/.rosrc
 
-# fetch an build the driver
 roscd
 
-if [ ! -d "ardrone_tutorials_getting_started" ];
+# Update the AR.Drone Driver
+if [ -d "ardrone_autonomy" ];
 then
- git clone https://github.com/mikehamer/ardrone_tutorials_getting_started.git
+ cd ardrone_autonomy
+ git pull
+ ./build_sdk.sh
+ roscd
+else
+ git clone https://github.com/AutonomyLab/ardrone_autonomy.git
+ cd ardrone_autonomy
+ ./build_sdk.sh
+ roscd
 fi
 
-chmod +x ardrone_tutorials_getting_started/update_tutorials.sh
-source ardrone_tutorials_getting_started/update_tutorials.sh
+# Update the AR.Drone Tutorials
+if [ -d "ardrone_tutorials" ];
+then
+ cd ardrone_tutorials
+ git pull
+ roscd
+else
+ git clone https://github.com/mikehamer/ardrone_tutorials.git
+fi
+
+rospack profile
+rosstack profile
+
+rosmake ardrone_tutorials
+read -p "Update complete. Press [Enter] to continue."

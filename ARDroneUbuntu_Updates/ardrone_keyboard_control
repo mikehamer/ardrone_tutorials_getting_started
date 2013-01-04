@@ -1,0 +1,5 @@
+#!/bin/bash
+source /home/ardrone/.rosrc
+roscd
+killall -9 roslaunch roscore rosmaster ardrone_driver rosout
+roslaunch ardrone_tutorials keyboard_controller.launch
